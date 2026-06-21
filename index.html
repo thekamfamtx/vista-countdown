@@ -5,104 +5,118 @@
 <title>Carnival Vista Countdown</title>
 
 <style>
-body {
-  margin:0;
-  font-family:Arial;
-  background:transparent;
+
+body{
+    margin:0;
+    background:transparent;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
 }
 
-/* SAME SIZE AS GOBBLE */
-#countdown-box {
-  position:fixed;
-  top:30px;
-  right:30px;
+/* WIDE BANNER */
+#countdown-box{
 
-  width:380px;
-  padding:18px;
+    position:fixed;
 
-  text-align:center;
-  color:white;
+    top:30px;
+    right:30px;
 
-  background:linear-gradient(
-    135deg,
-    #1a001f,
-    #4b0082,
-    #ff6f00
-  );
+    width:800px;
+    height:100px;
 
-  border:4px solid #ff7b00;
-  border-radius:20px;
+    padding:15px 25px;
 
-  box-shadow:
-    0 0 25px rgba(255,123,0,.7);
+    box-sizing:border-box;
 
-  animation:pulse 2s infinite;
-}
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 
-@keyframes pulse {
+    color:white;
 
-  0% {
+    background:linear-gradient(
+        135deg,
+        #120018,
+        #4b0082,
+        #ff6f00
+    );
+
+    border:4px solid #ff7b00;
+
+    border-radius:20px;
+
     box-shadow:
-      0 0 15px rgba(255,123,0,.5);
-  }
+        0 0 15px rgba(255,123,0,.6);
 
-  50% {
-    box-shadow:
-      0 0 45px rgba(156,39,176,.95);
-  }
-
-  100% {
-    box-shadow:
-      0 0 15px rgba(255,123,0,.5);
-  }
+    animation:pulse 2s infinite;
 }
 
-#title {
+@keyframes pulse{
 
-  font-size:26px;
-  font-weight:bold;
+    0%{
+        box-shadow:
+        0 0 15px rgba(255,123,0,.5);
+    }
 
-  text-transform:uppercase;
+    50%{
+        box-shadow:
+        0 0 40px rgba(156,39,176,.95);
+    }
 
-  color:#ffb347;
-
-  text-shadow:
-    0 0 8px #ff7b00,
-    0 0 15px #9c27b0;
+    100%{
+        box-shadow:
+        0 0 15px rgba(255,123,0,.5);
+    }
 }
 
-#timer {
+#left{
 
-  font-size:44px;
-  font-weight:bold;
-
-  margin:12px 0;
-
-  color:white;
-
-  text-shadow:
-    0 0 8px #ff7b00;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
 }
 
-#subtext {
+#title{
 
-  font-size:16px;
+    font-size:24px;
+    font-weight:bold;
 
-  color:#ffd180;
+    text-transform:uppercase;
+
+    color:#ffb347;
+
+    text-shadow:
+        0 0 8px #ff7b00,
+        0 0 15px #9c27b0;
 }
 
-/* LOGO */
-#logo {
+#subtext{
 
-  position:absolute;
+    font-size:14px;
 
-  bottom:14px;
-  right:14px;
+    color:#ffd180;
 
-  width:55px;
-
-  opacity:.35;
+    margin-top:4px;
 }
+
+#timer{
+
+    font-size:44px;
+    font-weight:bold;
+
+    white-space:nowrap;
+
+    text-shadow:
+        0 0 10px #ff7b00;
+}
+
+#logo{
+
+    width:60px;
+
+    opacity:.35;
+}
+
 </style>
 </head>
 
@@ -110,17 +124,23 @@ body {
 
 <div id="countdown-box">
 
-  <div id="title">
-    🎃 Carnival Vista Countdown 🎃
-  </div>
+    <div id="left">
 
-  <div id="timer"></div>
+        <div id="title">
+            🎃 Carnival Vista Countdown 🎃
+        </div>
 
-  <div id="subtext">
-    October 11, 2026
-  </div>
+        <div id="subtext">
+            October 11, 2026 • 11:00 AM
+        </div>
 
-  <img id="logo" src="vista-logo.png">
+    </div>
+
+    <div id="timer">
+        Loading...
+    </div>
+
+    <img id="logo" src="vista-logo.png">
 
 </div>
 
@@ -131,41 +151,43 @@ new Date("October 11, 2026 11:00:00").getTime();
 
 function update(){
 
-  const now = new Date().getTime();
+    const now =
+    new Date().getTime();
 
-  const d = target - now;
+    const distance =
+    target - now;
 
-  if(d <= 0){
+    if(distance <= 0){
+
+        document.getElementById("timer").innerHTML =
+        "🚢 BON VOYAGE!";
+
+        return;
+    }
+
+    const days =
+    Math.floor(distance / (1000*60*60*24));
+
+    const hours =
+    Math.floor(
+        (distance % (1000*60*60*24))
+        / (1000*60*60)
+    );
+
+    const mins =
+    Math.floor(
+        (distance % (1000*60*60))
+        / (1000*60)
+    );
+
+    const secs =
+    Math.floor(
+        (distance % (1000*60))
+        / 1000
+    );
 
     document.getElementById("timer").innerHTML =
-    "🚢 BON VOYAGE!";
-
-    return;
-  }
-
-  const days =
-  Math.floor(d/(1000*60*60*24));
-
-  const hours =
-  Math.floor(
-    (d%(1000*60*60*24))
-    /(1000*60*60)
-  );
-
-  const mins =
-  Math.floor(
-    (d%(1000*60*60))
-    /(1000*60)
-  );
-
-  const secs =
-  Math.floor(
-    (d%(1000*60))
-    /1000
-  );
-
-  document.getElementById("timer").innerHTML =
-  `${days}d ${hours}h ${mins}m ${secs}s`;
+    `${days}d ${hours}h ${mins}m ${secs}s`;
 }
 
 update();
