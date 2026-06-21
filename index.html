@@ -1,198 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Carnival Vista Countdown</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Halloween Cruise Countdown</title>
 
 <style>
-
-body{
-    margin:0;
-    background:transparent;
-    overflow:hidden;
-    font-family:Arial,sans-serif;
-}
-
-/* WIDE BANNER */
-#countdown-box{
-
-    position:fixed;
-
-    top:30px;
-    right:30px;
-
-    width:800px;
-    height:100px;
-
-    padding:15px 25px;
-
-    box-sizing:border-box;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    color:white;
-
-    background:linear-gradient(
-        135deg,
-        #120018,
-        #4b0082,
-        #ff6f00
-    );
-
-    border:4px solid #ff7b00;
-
-    border-radius:20px;
-
-    box-shadow:
-        0 0 15px rgba(255,123,0,.6);
-
-    animation:pulse 2s infinite;
-}
-
-@keyframes pulse{
-
-    0%{
-        box-shadow:
-        0 0 15px rgba(255,123,0,.5);
+    body {
+        margin: 0;
+        background: transparent;
+        font-family: Arial, sans-serif;
+        color: white;
+        text-align: center;
     }
 
-    50%{
-        box-shadow:
-        0 0 40px rgba(156,39,176,.95);
+    .widget {
+        width: 420px;
+        padding: 22px;
+        border-radius: 18px;
+
+        /* Halloween vibe background */
+        background: linear-gradient(135deg, #1a001f, #0b0b0b);
+        border: 2px solid #ff7a00;
+
+        box-shadow: 0 0 25px rgba(255, 122, 0, 0.35),
+                    0 0 35px rgba(128, 0, 255, 0.25);
+
+        position: relative;
     }
 
-    100%{
-        box-shadow:
-        0 0 15px rgba(255,123,0,.5);
+    /* TOP TITLE */
+    .title {
+        font-size: 20px;
+        font-weight: bold;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        color: #ff7a00;
+        text-shadow: 0 0 10px #ff7a00, 0 0 15px #8000ff;
+
+        margin-bottom: 10px;
     }
-}
 
-#left{
+    /* COUNTDOWN BIG */
+    .countdown {
+        font-size: 46px;
+        font-weight: 900;
+        letter-spacing: 1px;
 
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-}
+        color: #ffffff;
+        text-shadow: 0 0 10px #8000ff, 0 0 20px #ff7a00;
 
-#title{
+        margin: 18px 0;
+    }
 
-    font-size:24px;
-    font-weight:bold;
+    /* BOTTOM DATE */
+    .date {
+        font-size: 16px;
+        opacity: 0.9;
+        color: #ffb366;
+        text-shadow: 0 0 8px rgba(255, 122, 0, 0.5);
+        margin-top: 10px;
+    }
 
-    text-transform:uppercase;
-
-    color:#ffb347;
-
-    text-shadow:
-        0 0 8px #ff7b00,
-        0 0 15px #9c27b0;
-}
-
-#subtext{
-
-    font-size:14px;
-
-    color:#ffd180;
-
-    margin-top:4px;
-}
-
-#timer{
-
-    font-size:44px;
-    font-weight:bold;
-
-    white-space:nowrap;
-
-    text-shadow:
-        0 0 10px #ff7b00;
-}
-
-#logo{
-
-    width:60px;
-
-    opacity:.35;
-}
-
+    /* OPTIONAL LOGO */
+    .logo {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        filter: drop-shadow(0 0 6px #ff7a00);
+    }
 </style>
 </head>
 
 <body>
 
-<div id="countdown-box">
+<div class="widget">
 
-    <div id="left">
+    <!-- OPTIONAL LOGO -->
+    <!-- <img class="logo" src="logo.png" alt="logo"> -->
 
-        <div id="title">
-            🎃 Carnival Vista Countdown 🎃
-        </div>
+    <div class="title">🎃 Carnival Vista Countdown 👻</div>
 
-        <div id="subtext">
-            October 11, 2026 • 11:00 AM
-        </div>
+    <div class="countdown" id="countdown">Loading...</div>
 
-    </div>
-
-    <div id="timer">
-        Loading...
-    </div>
-
-    <img id="logo" src="vista-logo.png">
+    <div class="date">October 11, 2026</div>
 
 </div>
 
 <script>
+    const cruiseDate = new Date("October 11, 2026 00:00:00").getTime();
 
-const target =
-new Date("October 11, 2026 11:00:00").getTime();
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = cruiseDate - now;
 
-function update(){
+        if (distance <= 0) {
+            document.getElementById("countdown").innerHTML = "🎃 IT'S CRUISE DAY! 👻";
+            return;
+        }
 
-    const now =
-    new Date().getTime();
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((distance / (1000 * 60)) % 60);
+        const seconds = Math.floor((distance / 1000) % 60);
 
-    const distance =
-    target - now;
-
-    if(distance <= 0){
-
-        document.getElementById("timer").innerHTML =
-        "🚢 BON VOYAGE!";
-
-        return;
+        document.getElementById("countdown").innerHTML =
+            `${days}d ${hours}h ${minutes}m ${seconds}s`;
     }
 
-    const days =
-    Math.floor(distance / (1000*60*60*24));
-
-    const hours =
-    Math.floor(
-        (distance % (1000*60*60*24))
-        / (1000*60*60)
-    );
-
-    const mins =
-    Math.floor(
-        (distance % (1000*60*60))
-        / (1000*60)
-    );
-
-    const secs =
-    Math.floor(
-        (distance % (1000*60))
-        / 1000
-    );
-
-    document.getElementById("timer").innerHTML =
-    `${days}d ${hours}h ${mins}m ${secs}s`;
-}
-
-update();
-setInterval(update,1000);
-
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
 </script>
 
 </body>
